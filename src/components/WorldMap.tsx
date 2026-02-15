@@ -12,8 +12,8 @@ import {
   ZoomableGroup,
 } from 'react-simple-maps';
 import { scaleLinear } from 'd3-scale';
-import { useMatomoCountries } from '@/hooks/useMatomoData';
-import { Globe, Users, Eye, Clock, MapPin } from 'lucide-react';
+import { useMatomoCountries, useMatomoRealtime, useMatomoLiveCounters } from '@/hooks/useMatomoData';
+import { Globe, Users, Eye, Clock, MapPin, ChevronDown } from 'lucide-react';
 
 // Natural Earth TopoJSON - Clean country boundaries (hosted CDN)
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
@@ -119,8 +119,91 @@ interface TooltipData {
   y: number;
 }
 
+// Time period options for the dropdown
+type TimePeriod = 'live' | 'today' | 'week' | 'month' | 'year';
+
+const periodOptions: { value: TimePeriod; label: string; period: string; date: string }[] = [
+  { value: 'live', label: 'Live (30m)', period: 'day', date: 'today' },
+  { value: 'today', label: 'Today', period: 'day', date: 'today' },
+  { value: 'week', label: 'This Week', period: 'week', date: 'today' },
+  { value: 'month', label: 'This Month', period: 'month', date: 'today' },
+  { value: 'year', label: 'All Time', period: 'range', date: '2020-01-01,today' },
+];
+
 const WorldMap = () => {
-  const { data: countries = [], isLoading, error } = useMatomoCountries();
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('live');
+  const [showDropdown, setShowDropdown] = useState(false);
+  
+  // Get the period config
+  const periodConfig = periodOptions.find(p => p.value === selectedPeriod) || periodOptions[0];
+  
+  // Fetch real-time visitors data (for 'live' mode)
+  const { data: realtimeData } = useMatomoRealtime();
+  
+  // Fetch live counters (active visitors in last 30 minutes)
+  const { data: liveCounters } = useMatomoLiveCounters(30);
+  
+  // Fetch country data based on selected period
+  const { data: periodCountries = [], isLoading, error } = useMatomoCountries(
+    periodConfig.period,
+    periodConfig.date
+  );
+  
+  // For 'live' mode, filter visitors to only those active in last 30 minutes
+  const liveCountries = useMemo(() => {
+    if (selectedPeriod !== 'live' || !realtimeData?.visitors) return [];
+    
+    // Get current timestamp
+    const now = Math.floor(Date.now() / 1000);
+    const thirtyMinutesAgo = now - (30 * 60); // 30 minutes in seconds
+    
+    // Filter to only visitors active in last 30 minutes
+    const activeVisitors = realtimeData.visitors.filter(visitor => 
+      visitor.lastActionTimestamp && visitor.lastActionTimestamp >= thirtyMinutesAgo
+    );
+    
+    // Group active visitors by country
+    const countryMap = new Map<string, { label: string; code: string; nb_visits: number; nb_uniq_visitors: number; nb_actions: number }>();
+    
+    activeVisitors.forEach(visitor => {
+      const code = visitor.countryCode?.toLowerCase();
+      if (code) {
+        const existing = countryMap.get(code);
+        if (existing) {
+          existing.nb_visits += 1;
+          existing.nb_uniq_visitors += 1;
+          existing.nb_actions += visitor.actionDetails?.length || 1;
+        } else {
+          countryMap.set(code, {
+            label: visitor.country || code.toUpperCase(),
+            code: code,
+            nb_visits: 1,
+            nb_uniq_visitors: 1,
+            nb_actions: visitor.actionDetails?.length || 1,
+          });
+        }
+      }
+    });
+    
+    return Array.from(countryMap.values());
+  }, [selectedPeriod, realtimeData?.visitors]);
+  
+  // Use live data or period data based on selection
+  const countries = selectedPeriod === 'live' ? liveCountries : periodCountries;
+  
+  // Get live stats for display
+  const liveStats = useMemo(() => {
+    if (!liveCounters || !Array.isArray(liveCounters) || liveCounters.length === 0) {
+      return { visitors: 0, visits: 0, actions: 0 };
+    }
+    const counters = liveCounters[0];
+    return {
+      visitors: counters.visitors || 0,
+      visits: counters.visits || 0,
+      actions: counters.actions || 0,
+    };
+  }, [liveCounters]);
+  
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState<[number, number]>([0, 20]);
@@ -324,7 +407,7 @@ const WorldMap = () => {
               }
             </Geographies>
 
-            {/* Live visitor dots */}
+            {/* Live visitor dots - Yellow only */}
             {markerLocations.length > 0 && markerLocations.map((location, idx) => {
               const isActive = idx === activeIndex;
               const isHovered = tooltipData?.countryCode === location.code;
@@ -333,12 +416,12 @@ const WorldMap = () => {
               
               return (
                 <Marker key={`${location.code}-${idx}`} coordinates={location.coordinates}>
-                  {/* Main dot - darker colors for better contrast */}
+                  {/* Main dot - yellow/gold for all */}
                   <circle
                     r={dotSize}
-                    fill={(isActive || isHovered) ? '#d4a017' : '#1e3a8a'}
+                    fill="#d4a017"
                     fillOpacity={1}
-                    stroke={(isActive || isHovered) ? '#001d3d' : '#3b82f6'}
+                    stroke="#001d3d"
                     strokeWidth={(isActive || isHovered) ? 3 : 2}
                     className={(isActive || isHovered) ? 'animate-pulse' : ''}
                   />
@@ -394,33 +477,106 @@ const WorldMap = () => {
 
       {/* Color Legend - Compact */}
       <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2.5 shadow-lg border border-gray-100 z-10">
-        <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Live Activity</p>
+        <p className="text-[9px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+          {selectedPeriod === 'live' ? 'Live Activity' : 'Visitor Activity'}
+        </p>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#1e3a8a] border-2 border-[#3b82f6] animate-pulse"></div>
-          <span className="text-[10px] text-gray-600">Active readers rotating</span>
+          <div className={`w-3 h-3 rounded-full bg-[#d4a017] border-2 border-[#001d3d] ${selectedPeriod === 'live' ? 'animate-pulse' : ''}`}></div>
+          <span className="text-[10px] text-gray-600">
+            {selectedPeriod === 'live' ? 'Active readers' : `Readers (${periodOptions.find(p => p.value === selectedPeriod)?.label})`}
+          </span>
         </div>
       </div>
 
-      {/* Stats Badge - Compact */}
-      {countries.length > 0 && (
+      {/* Stats Badge - Shows live or period stats */}
+      {(selectedPeriod === 'live' || countries.length > 0) && (
         <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-gray-100 z-10">
-          <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-[#001d3d]" />
-              <span className="text-xs font-bold text-[#001d3d]">{countries.length}</span>
-              <span className="text-[9px] text-gray-500">countries</span>
+          {selectedPeriod === 'live' ? (
+            // Live mode: Show real-time counters
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-xs font-bold text-green-600">{liveStats.visitors}</span>
+                <span className="text-[9px] text-gray-500">Active</span>
+              </div>
+              <div className="w-px h-3 bg-gray-200" />
+              <div className="flex items-center gap-1">
+                <Users className="w-3 h-3 text-[#3b82f6]" />
+                <span className="text-xs font-bold text-[#3b82f6]">{liveStats.visits}</span>
+                <span className="text-[9px] text-gray-500">Visits (30m)</span>
+              </div>
+              <div className="w-px h-3 bg-gray-200" />
+              <div className="flex items-center gap-1">
+                <Eye className="w-3 h-3 text-[#001d3d]" />
+                <span className="text-xs font-bold text-[#001d3d]">{liveStats.actions}</span>
+                <span className="text-[9px] text-gray-500">Actions</span>
+              </div>
             </div>
-            <div className="w-px h-3 bg-gray-200" />
-            <div className="flex items-center gap-1">
-              <Users className="w-3 h-3 text-[#3b82f6]" />
-              <span className="text-xs font-bold text-[#3b82f6]">
-                {formatNumber(countries.reduce((sum, c) => sum + (c.nb_visits || 0), 0))}
-              </span>
-              <span className="text-[9px] text-gray-500">visits</span>
+          ) : (
+            // Period mode: Show country stats
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-[#001d3d]" />
+                <span className="text-xs font-bold text-[#001d3d]">{countries.length}</span>
+                <span className="text-[9px] text-gray-500">countries</span>
+              </div>
+              <div className="w-px h-3 bg-gray-200" />
+              <div className="flex items-center gap-1">
+                <Users className="w-3 h-3 text-[#3b82f6]" />
+                <span className="text-xs font-bold text-[#3b82f6]">
+                  {formatNumber(countries.reduce((sum, c) => sum + (c.nb_visits || 0), 0))}
+                </span>
+                <span className="text-[9px] text-gray-500">visits</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
+
+      {/* Time Period Dropdown */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+        <div className="relative">
+          <button
+            onClick={() => setShowDropdown(!showDropdown)}
+            className="flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 hover:border-blue-300 transition-all"
+          >
+            <Clock className="w-3.5 h-3.5 text-[#001d3d]" />
+            <span className="text-xs font-semibold text-[#001d3d]">
+              {periodOptions.find(p => p.value === selectedPeriod)?.label}
+            </span>
+            <ChevronDown className={`w-3.5 h-3.5 text-gray-500 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
+            {selectedPeriod === 'live' && (
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            )}
+          </button>
+          
+          {showDropdown && (
+            <div className="absolute top-full left-0 mt-1 w-full bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-30">
+              {periodOptions.map(option => (
+                <button
+                  key={option.value}
+                  onClick={() => {
+                    setSelectedPeriod(option.value);
+                    setShowDropdown(false);
+                  }}
+                  className={`w-full px-3 py-2 text-left text-xs font-medium transition-colors flex items-center gap-2
+                    ${selectedPeriod === option.value 
+                      ? 'bg-blue-50 text-[#001d3d]' 
+                      : 'text-gray-600 hover:bg-gray-50'}`}
+                >
+                  {option.value === 'live' && (
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  )}
+                  {option.label}
+                  {selectedPeriod === option.value && (
+                    <span className="ml-auto text-blue-500">✓</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Tooltip */}
       {tooltipData && (
