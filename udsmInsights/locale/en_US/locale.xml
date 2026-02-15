@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../lib/pkp/dtd/locale.dtd">
+<!--
+  - locale/en_US/locale.xml
+  - 
+  - Copyright (c) 2024-2026 University of Dar es Salaam
+  - Distributed under the GNU GPL v3.
+  -
+  - UDSM Insights Plugin - English locale
+  -->
+<locale name="en_US" full_name="U.S. English">
+    <message key="plugins.generic.udsmInsights.displayName">UDSM Insights Dashboard</message>
+    <message key="plugins.generic.udsmInsights.description">Provides a comprehensive analytics dashboard for journal statistics, including readership metrics, citation counts, global reach, and engagement analytics.</message>
+    <message key="plugins.generic.udsmInsights.menuItem">Insights Dashboard</message>
+    <message key="plugins.generic.udsmInsights.openDashboard">Open Dashboard</message>
+    
+    <!-- Settings -->
+    <message key="plugins.generic.udsmInsights.settings">UDSM Insights Settings</message>
+    <message key="plugins.generic.udsmInsights.settings.matomoUrl">Matomo Analytics URL</message>
+    <message key="plugins.generic.udsmInsights.settings.matomoUrl.description">Base URL for your Matomo analytics instance (e.g., https://analytics.udsm.ac.tz)</message>
+    <message key="plugins.generic.udsmInsights.settings.matomoSiteId">Matomo Site ID</message>
+    <message key="plugins.generic.udsmInsights.settings.matomoSiteId.description">The site ID configured in Matomo for this journal</message>
+    <message key="plugins.generic.udsmInsights.settings.matomoToken">Matomo Auth Token</message>
+    <message key="plugins.generic.udsmInsights.settings.matomoToken.description">API authentication token for Matomo (keep secure)</message>
+    <message key="plugins.generic.udsmInsights.settings.fastStatsApiUrl">Fast Stats API URL</message>
+    <message key="plugins.generic.udsmInsights.settings.fastStatsApiUrl.description">URL for the Fast Stats API endpoint</message>
+    <message key="plugins.generic.udsmInsights.settings.jwtToken">JWT Authentication Token</message>
+    <message key="plugins.generic.udsmInsights.settings.jwtToken.description">JWT token for Fast Stats API authentication</message>
+    <message key="plugins.generic.udsmInsights.settings.enableRealtime">Enable Real-time Tracking</message>
+    <message key="plugins.generic.udsmInsights.settings.enableRealtime.description">Show live visitor activity on the dashboard</message>
+    <message key="plugins.generic.udsmInsights.settings.enablePublicView">Enable Public View</message>
+    <message key="plugins.generic.udsmInsights.settings.enablePublicView.description">Allow visitors to access a read-only version of the dashboard without logging in (at /insights/public)</message>
+    <message key="plugins.generic.udsmInsights.settings.refreshInterval">Auto-refresh Interval (seconds)</message>
+    <message key="plugins.generic.udsmInsights.settings.refreshInterval.description">How often to refresh dashboard data (minimum 30 seconds)</message>
+    
+    <!-- Dashboard -->
+    <message key="plugins.generic.udsmInsights.dashboard.title">UDSM Insights Dashboard</message>
+    <message key="plugins.generic.udsmInsights.dashboard.loading">Loading analytics data...</message>
+    <message key="plugins.generic.udsmInsights.dashboard.error">Error loading dashboard</message>
+    <message key="plugins.generic.udsmInsights.dashboard.noAccess">You do not have permission to access the Insights Dashboard.</message>
+</locale>

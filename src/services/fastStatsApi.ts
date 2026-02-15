@@ -7,16 +7,20 @@
  */
 
 import OJS_CONFIG from '@/config/ojs';
+import { getFastStatsConfig } from '@/config/pluginConfig';
+
+// Get config from OJS plugin or defaults
+const FAST_STATS_CONFIG = getFastStatsConfig();
 
 const getAuthHeaders = (): HeadersInit => {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   };
   
-  // Add authorization header if apiKey exists in config
-  const apiKey = (OJS_CONFIG as any).apiKey;
-  if (apiKey) {
-    headers.Authorization = `Bearer ${apiKey}`;
+  // Use JWT token from plugin config first, then fall back to OJS config
+  const jwtToken = FAST_STATS_CONFIG.jwtToken || (OJS_CONFIG as any).apiKey;
+  if (jwtToken) {
+    headers.Authorization = `Bearer ${jwtToken}`;
   }
   
   return headers;
@@ -87,6 +91,7 @@ export interface FastStatsPublicationWithStats {
   contextId: number;
   status?: number;
   title: string;
+  authors?: string;
   journalPath: string;
   journalName: string;
   sectionId: number;
@@ -326,6 +331,20 @@ export interface FastStatsDashboardResponse {
     orderBy: string;
     orderDirection: string;
   };
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Real-Time Polling API (for download statistics)
+   ══════════════════════════════════════════════════════════════════ */
+
+/** Response from /stats/poll endpoint - real-time download statistics */
+export interface StatsPollingResponse {
+  todayDownloads: number;
+  totalDownloads: number;
+  yearDownloads: number;
+  totalPapers: number;
+  timestamp: number;
+  realtime: true;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -775,6 +794,24 @@ export async function fetchFastStatsRecentPublications(
   
   const url = buildFastStatsUrl(journalPath, 'publications/recent', params);
   return fetchWithTimeout<FastStatsPublicationWithStats[]>(url);
+}
+
+/**
+ * Fetch real-time polling statistics (updates every 2 seconds)
+ * This endpoint returns live download counts that update immediately
+ * 
+ * @param journalPath - URL path of journal (e.g., 'tjpsd')
+ * @param contextId - Optional context ID filter
+ */
+export async function fetchStatsPolling(
+  journalPath: string,
+  contextId?: number
+): Promise<StatsPollingResponse> {
+  const params = new URLSearchParams();
+  if (contextId) params.append('contextId', contextId.toString());
+  
+  const url = buildFastStatsUrl(journalPath, 'stats/poll', params);
+  return fetchWithTimeout<StatsPollingResponse>(url, 5000); // Shorter timeout for polling
 }
 
 /* ══════════════════════════════════════════════════════════════════

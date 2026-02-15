@@ -111,7 +111,7 @@ const DownloadsMapWidget = ({
       if (coords) {
         const pub = topPubs[idx % topPubs.length];
         activities.push({
-          id: visitor.idVisit || `v-${idx}`,
+          id: String(visitor.idVisit || `v-${idx}`),
           country: visitor.country || 'Unknown',
           countryCode: code,
           city: visitor.city,

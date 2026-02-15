@@ -11,6 +11,7 @@ import {
   Send, Clock, Archive, FileCheck, GitCompareArrows, MapPin, Flag
 } from 'lucide-react';
 import { useFastStatsDashboard } from '@/hooks/useOJSData';
+import { useDownloadsPolling, useDownloadsChangeDetector } from '@/hooks/useDownloadsPolling';
 import { useMatomoRealtime, useMatomoLiveCounters, useMatomoCountries } from '@/hooks/useMatomoData';
 import { computeInsights, type ComputedInsights, type InsightItem } from '@/hooks/useInsightsData';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,6 +33,7 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 import WorldMap from '@/components/WorldMap';
 import DownloadsMapWidget from '@/components/DownloadsMapWidget';
 import OJS_CONFIG from '@/config/ojs';
+import { getFastStatsConfig, getOjsPluginConfig } from '@/config/pluginConfig';
 import type { UnifiedDashboardMetrics, FastStatsJournalStats } from '@/services/fastStatsApi';
 import { fetchUnifiedDashboardMetrics, triggerCitationFetch, triggerOpenAlexFetch, clearCitationCache } from '@/services/fastStatsApi';
 
@@ -61,8 +63,30 @@ const InsightsPage = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [showAnimations, setShowAnimations] = useState(true);
 
+  // Fetch dashboard metrics (historical data)
   const { data: metrics, isLoading, error, refetch } = useFastStatsDashboard(selectedJournalId);
-  const insights = useMemo(() => computeInsights(metrics), [metrics]);
+  
+  // Poll real-time downloads every 2 seconds
+  const { data: pollingData } = useDownloadsPolling(2000, selectedJournalId || undefined, true);
+  
+  // Detect download changes for animations
+  const downloadChange = useDownloadsChangeDetector(pollingData?.totalDownloads);
+  
+  // Merge polled download data with historical metrics
+  const mergedMetrics = useMemo(() => {
+    if (!metrics) return metrics;
+    if (!pollingData) return metrics;
+    
+    return {
+      ...metrics,
+      totalDownloads: pollingData.totalDownloads,
+      todayDownloads: pollingData.todayDownloads,
+      yearDownloads: pollingData.yearDownloads,
+      totalPublications: pollingData.totalPapers,
+    };
+  }, [metrics, pollingData]);
+  
+  const insights = useMemo(() => computeInsights(mergedMetrics), [mergedMetrics]);
 
   const apiJournals = (Array.isArray(metrics?.journals) ? metrics.journals : []).map(j => ({
     id: j.id, urlPath: j.path, name: { en_US: j.name }, enabled: j.enabled, _href: '',
@@ -95,9 +119,16 @@ const InsightsPage = () => {
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <h1 className="font-display text-base font-bold tracking-tight text-white leading-tight">
-                UDSM <span className="text-[#d4a017]">Insights</span>
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="font-display text-base font-bold tracking-tight text-white leading-tight">
+                  UDSM <span className="text-[#d4a017]">Insights</span>
+                </h1>
+                {pollingData?.realtime && (
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 animate-pulse">
+                    LIVE
+                  </span>
+                )}
+              </div>
               <p className="text-[10px] text-blue-200/70 font-medium tracking-wider uppercase">Analytics Hub</p>
             </div>
           )}
@@ -196,13 +227,13 @@ const InsightsPage = () => {
             <ErrorState message={String(error)} onRetry={refetch} />
           ) : (
             <>
-              {activePanel === 'overview'   && <OverviewPanel metrics={metrics!} insights={insights!} showAnimations={showAnimations} onNavigate={setActivePanel} />}
-              {activePanel === 'journals'   && <JournalsPanel journals={rawJournals} selectedJournalId={selectedJournalId} onSelect={handleJournalSelect} metrics={metrics} />}
+              {activePanel === 'overview'   && <OverviewPanel metrics={mergedMetrics!} insights={insights!} showAnimations={showAnimations} onNavigate={setActivePanel} downloadPulsing={downloadChange.hasChanged} />}
+              {activePanel === 'journals'   && <JournalsPanel journals={rawJournals} selectedJournalId={selectedJournalId} onSelect={handleJournalSelect} metrics={mergedMetrics} />}
               {activePanel === 'comparison' && <ComparisonPanel journals={rawJournals} />}
-              {activePanel === 'impact'     && <ResearchImpactPanel metrics={metrics!} insights={insights!} />}
-              {activePanel === 'engagement' && <EngagementPanel metrics={metrics!} insights={insights!} />}
-              {activePanel === 'editorial'  && <EditorialPanel metrics={metrics!} insights={insights!} />}
-              {activePanel === 'citations'  && <CitationsPanel metrics={metrics!} insights={insights!} />}
+              {activePanel === 'impact'     && <ResearchImpactPanel metrics={mergedMetrics!} insights={insights!} />}
+              {activePanel === 'engagement' && <EngagementPanel metrics={mergedMetrics!} insights={insights!} />}
+              {activePanel === 'editorial'  && <EditorialPanel metrics={mergedMetrics!} insights={insights!} />}
+              {activePanel === 'citations'  && <CitationsPanel metrics={mergedMetrics!} insights={insights!} />}
               {activePanel === 'settings'   && (
                 <SettingsPanel
                   autoRefresh={autoRefresh}
@@ -211,7 +242,7 @@ const InsightsPage = () => {
                   setShowAnimations={setShowAnimations}
                   selectedJournalId={selectedJournalId}
                   journals={contexts}
-                  metrics={metrics}
+                  metrics={mergedMetrics}
                 />
               )}
             </>
@@ -303,19 +334,20 @@ function StatBox({ label, value, sublabel, icon: Icon, color = '#235dcb', trend,
 }
 
 /** Metric Card - Matches SSRN-style dashboard cards */
-function MetricCard({ icon: Icon, label, value, change, sublabel, onClick }: {
+function MetricCard({ icon: Icon, label, value, change, sublabel, onClick, pulsing = false }: {
   icon: typeof Download;
   label: string;
   value: number;
   change?: number;
   sublabel: string;
   onClick?: () => void;
+  pulsing?: boolean;
 }) {
   const isPositive = change !== undefined && change >= 0;
   return (
     <div 
       onClick={onClick}
-      className={`bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-lg hover:border-gray-200 transition-all duration-300 ${onClick ? 'cursor-pointer' : ''}`}
+      className={`bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-lg hover:border-gray-200 transition-all duration-300 ${onClick ? 'cursor-pointer' : ''} ${pulsing ? 'ring-2 ring-[#d4a017] ring-opacity-50 shadow-xl animate-pulse' : ''}`}
     >
       <div className="flex items-start justify-between mb-4">
         <div className="p-2.5 rounded-xl bg-[#e8f4fd]">
@@ -418,7 +450,13 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 /* ═══════════════════════════════════════════════════════════════
    PANEL: Overview — World Map, Live Metrics, Matomo Real-time
    ═══════════════════════════════════════════════════════════════ */
-function OverviewPanel({ metrics, insights, showAnimations, onNavigate }: { metrics: UnifiedDashboardMetrics; insights: ComputedInsights; showAnimations: boolean; onNavigate: (panel: Panel) => void }) {
+function OverviewPanel({ metrics, insights, showAnimations, onNavigate, downloadPulsing = false }: { 
+  metrics: UnifiedDashboardMetrics; 
+  insights: ComputedInsights; 
+  showAnimations: boolean; 
+  onNavigate: (panel: Panel) => void;
+  downloadPulsing?: boolean;
+}) {
   const { data: realtimeData } = useMatomoRealtime();
   const { data: countersData } = useMatomoLiveCounters(30);
   const { data: countries } = useMatomoCountries('month', 'today');
@@ -434,16 +472,17 @@ function OverviewPanel({ metrics, insights, showAnimations, onNavigate }: { metr
           label="Total Downloads" 
           value={metrics.totalDownloads} 
           change={21.8} 
-          sublabel="vs. last month" 
           onClick={() => onNavigate('engagement')}
+          pulsing={downloadPulsing}
+          sublabel="real-time updates"
         />
         <MetricCard 
           icon={Quote} 
           label="Citations" 
           value={metrics.allCitations?.summary?.totalCitations || (metrics.citations as { totalCitations?: number })?.totalCitations || 0} 
           change={12.2} 
-          sublabel="vs. last month" 
           onClick={() => onNavigate('citations')}
+          sublabel="aggregated"
         />
         <MetricCard 
           icon={Users} 
@@ -1630,6 +1669,11 @@ function SettingsPanel({ autoRefresh, setAutoRefresh, showAnimations, setShowAni
     type?: 'success' | 'error' | 'info';
   }>({ loading: false });
 
+  // Get JWT token from plugin config or use default
+  const pluginConfig = getOjsPluginConfig();
+  const fastStatsConfig = getFastStatsConfig();
+  const jwtToken = fastStatsConfig.jwtToken || 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImZkYjU3NGU2NjgxY2ExMzg0YTk3MjA1YTYwZjNkMzlmOGE4NDlhYjMi.d1NKmyEhGCZclI5_nO_vsXmc1JnOGy0m2b2qFUjRH3s';
+
   const handleFetchCrossrefCitations = async () => {
     setCitationFetchStatus({ loading: true, message: 'Fetching citations from Crossref...', type: 'info' });
     
@@ -1643,8 +1687,8 @@ function SettingsPanel({ autoRefresh, setAutoRefresh, showAnimations, setShowAni
       const result = await triggerCitationFetch(journalPath, {
         limit: 100,
         onlyMissing: true,
-        email: 'admin@udsm.ac.tz', // Could be made configurable
-        jwtToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImZkYjU3NGU2NjgxY2ExMzg0YTk3MjA1YTYwZjNkMzlmOGE4NDlhYjMi.d1NKmyEhGCZclI5_nO_vsXmc1JnOGy0m2b2qFUjRH3s',
+        email: 'admin@udsm.ac.tz',
+        jwtToken: jwtToken,
       });
       
       setCitationFetchStatus({
@@ -1686,7 +1730,7 @@ function SettingsPanel({ autoRefresh, setAutoRefresh, showAnimations, setShowAni
         limit: 50,
         onlyMissing: true,
         email: 'admin@udsm.ac.tz',
-        jwtToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImZkYjU3NGU2NjgxY2ExMzg0YTk3MjA1YTYwZjNkMzlmOGE4NDlhYjMi.d1NKmyEhGCZclI5_nO_vsXmc1JnOGy0m2b2qFUjRH3s',
+        jwtToken: jwtToken,
       });
       
       setCitationFetchStatus({

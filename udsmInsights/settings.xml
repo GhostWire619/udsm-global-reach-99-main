@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE install SYSTEM "../../../lib/pkp/dtd/install.dtd">
+<!--
+  - settings.xml
+  - 
+  - Copyright (c) 2024-2026 University of Dar es Salaam
+  - Distributed under the GNU GPL v3.
+  -
+  - Default plugin settings
+  -->
+<install version="2.0.0.0">
+    <data>
+        <!-- Default Matomo settings (update after installation) -->
+        <table name="plugin_settings">
+            <row>
+                <field name="plugin_name">udsminsightsplugin</field>
+                <field name="setting_name">matomoUrl</field>
+                <field name="setting_value"></field>
+                <field name="setting_type">string</field>
+            </row>
+            <row>
+                <field name="plugin_name">udsminsightsplugin</field>
+                <field name="setting_name">matomoSiteId</field>
+                <field name="setting_value">1</field>
+                <field name="setting_type">string</field>
+            </row>
+            <row>
+                <field name="plugin_name">udsminsightsplugin</field>
+                <field name="setting_name">enableRealtime</field>
+                <field name="setting_value">1</field>
+                <field name="setting_type">bool</field>
+            </row>
+            <row>
+                <field name="plugin_name">udsminsightsplugin</field>
+                <field name="setting_name">refreshInterval</field>
+                <field name="setting_value">60</field>
+                <field name="setting_type">int</field>
+            </row>
+        </table>
+    </data>
+</install>

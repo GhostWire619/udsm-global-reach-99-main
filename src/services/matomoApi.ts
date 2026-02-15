@@ -5,13 +5,10 @@
  * API Documentation: https://developer.matomo.org/api-reference/reporting-api
  */
 
-// Matomo Configuration
-export const MATOMO_CONFIG = {
-  // Use proxy in development to bypass CORS, direct URL in production
-  baseUrl: import.meta.env.DEV ? '/matomo-api' : 'https://matomo.themenumanager.xyz',
-  siteId: 2,
-  authToken: 'e2b59861553c6f5d60e724d049da1bf7',
-};
+import { getMatomoConfig } from '@/config/pluginConfig';
+
+// Matomo Configuration - get from plugin config or defaults
+export const MATOMO_CONFIG = getMatomoConfig();
 
 /* ══════════════════════════════════════════════════════════════════
    Type Definitions
