@@ -222,7 +222,7 @@ const DownloadsMapWidget = ({
             </div>
             
             {/* Publication info */}
-            <h3 className="text-[#001d3d] font-bold text-base leading-tight mb-1 line-clamp-2">
+            <h3 className="text-[#003366] font-bold text-base leading-tight mb-1 line-clamp-2">
               {currentActivity.title}
             </h3>
             <p className="text-gray-600 text-sm">{currentActivity.author}</p>
@@ -257,7 +257,7 @@ const DownloadsMapWidget = ({
       </div>
 
       {/* Map Container */}
-      <div className="relative h-[280px] bg-gradient-to-b from-[#e8f0f4] to-[#d8e4ed] overflow-hidden">
+      <div className="relative h-[280px] bg-[#e8f4fd] overflow-hidden">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{
@@ -308,9 +308,9 @@ const DownloadsMapWidget = ({
                   {/* Main dot - darker colors for better contrast */}
                   <circle
                     r={dotSize}
-                    fill={isActive ? '#d4a017' : '#1e3a8a'}
+                    fill={isActive ? '#d4a017' : '#003366'}
                     fillOpacity={1}
-                    stroke={isActive ? '#001d3d' : '#3b82f6'}
+                    stroke={isActive ? '#003366' : '#3b82f6'}
                     strokeWidth={isActive ? 3 : 2}
                     className={isActive ? 'animate-pulse' : ''}
                   />
@@ -341,10 +341,10 @@ const DownloadsMapWidget = ({
         {/* Recent Downloads Badge */}
         <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-gray-200">
           <div className="flex items-center gap-2 mb-1">
-            <Download className="w-4 h-4 text-[#001d3d]" />
+            <Download className="w-4 h-4 text-[#003366]" />
             <span className="font-semibold text-gray-800">Recent Downloads</span>
           </div>
-          <p className="text-lg font-bold text-[#001d3d]">
+          <p className="text-lg font-bold text-[#003366]">
             {stats.recentDownloads > 100 ? Math.floor(stats.recentDownloads * 0.03) : Math.min(stats.recentDownloads, 15)} of {stats.recentDownloads}
           </p>
           <p className="text-xs text-gray-500">in the past day</p>
@@ -383,7 +383,7 @@ const DownloadsMapWidget = ({
       {/* Stats Footer */}
       <div className="grid grid-cols-3 divide-x divide-gray-100 border-t border-gray-100 bg-gradient-to-r from-gray-50 to-white">
         <div className="p-4 text-center">
-          <p className="text-2xl font-bold text-[#001d3d]">{formatNumber(stats.totalPapers)}</p>
+          <p className="text-2xl font-bold text-[#003366]">{formatNumber(stats.totalPapers)}</p>
           <p className="text-xs text-gray-500 font-medium">Total Papers</p>
         </div>
         <div className="p-4 text-center">
@@ -405,7 +405,7 @@ const DownloadsMapWidget = ({
               onClick={() => setCurrentIndex(idx)}
               className={`w-2 h-2 rounded-full transition-all ${
                 idx === currentIndex 
-                  ? 'bg-[#001d3d] scale-125' 
+                  ? 'bg-[#003366] scale-125' 
                   : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />

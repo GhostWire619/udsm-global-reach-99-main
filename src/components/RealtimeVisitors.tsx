@@ -64,7 +64,7 @@ const VisitorRow = ({ visitor, index }: { visitor: MatomoVisitor; index: number 
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className="text-sm font-semibold text-[#001d3d] truncate block">
+              <span className="text-sm font-semibold text-[#003366] truncate block">
                 Reader from {countryName}
               </span>
             </TooltipTrigger>

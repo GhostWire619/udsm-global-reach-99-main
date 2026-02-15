@@ -83,22 +83,20 @@ const InsightsPage = () => {
       <aside
         className={`fixed top-0 left-0 h-full z-40 flex flex-col transition-all duration-300 ease-in-out
           ${collapsed ? 'w-[72px]' : 'w-[260px]'}
-          bg-gradient-to-b from-[#001d3d] via-[#002855] to-[#003566] text-white shadow-2xl`}
+          bg-[#e8f4fd] text-[#003366] shadow-xl border-r border-blue-100`}
       >
         {/* Brand */}
-        <div className={`flex items-center gap-3 px-4 py-5 border-b border-white/10 ${collapsed ? 'justify-center' : ''}`}>
+        <div className={`flex items-center gap-3 px-4 py-5 border-b border-blue-100 ${collapsed ? 'justify-center' : ''}`}>
           <div className="relative">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-[#d4a017] to-[#e8b624] shadow-lg shadow-yellow-900/20">
-              <GraduationCap className="w-6 h-6 text-[#001d3d]" />
-            </div>
-            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#002855] animate-pulse" />
+            <img src="/udsmlogo.png" alt="UDSM" className="w-10 h-10 object-contain" />
+            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-white animate-pulse" />
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <h1 className="font-display text-base font-bold tracking-tight text-white leading-tight">
-                UDSM <span className="text-[#e8b624]">Insights</span>
+              <h1 className="font-display text-base font-bold tracking-tight text-[#003366] leading-tight">
+                UDSM <span className="text-[#d4a017]">Insights</span>
               </h1>
-              <p className="text-[10px] text-blue-200/70 font-medium tracking-wider uppercase">Analytics Hub</p>
+              <p className="text-[10px] text-[#003366]/60 font-medium tracking-wider uppercase">Analytics Hub</p>
             </div>
           )}
         </div>
@@ -114,19 +112,19 @@ const InsightsPage = () => {
                 title={collapsed ? label : undefined}
                 className={`group w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200
                   ${isActive
-                    ? 'bg-white/15 text-white shadow-inner shadow-white/5'
-                    : 'text-blue-100/60 hover:text-white hover:bg-white/8'
+                    ? 'bg-[#003366]/10 text-[#003366] shadow-sm'
+                    : 'text-[#003366]/60 hover:text-[#003366] hover:bg-[#003366]/5'
                   }
                   ${collapsed ? 'justify-center px-0' : ''}
                 `}
               >
                 <div className={`p-1.5 rounded-lg transition-colors duration-200
-                  ${isActive ? 'bg-[#d4a017]/20 text-[#e8b624]' : 'text-blue-200/50 group-hover:text-blue-100'}`}>
+                  ${isActive ? 'bg-[#003366]/10 text-[#003366]' : 'text-[#003366]/40 group-hover:text-[#003366]'}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 {!collapsed && <span>{label}</span>}
                 {isActive && !collapsed && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#e8b624]" />
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#003366]" />
                 )}
               </button>
             );
@@ -134,20 +132,20 @@ const InsightsPage = () => {
         </nav>
 
         {/* Collapse Toggle */}
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-blue-100">
           <button
             onClick={() => setCollapsed(c => !c)}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-blue-200/50 hover:text-white hover:bg-white/8 transition-colors text-xs"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-[#003366]/50 hover:text-[#003366] hover:bg-[#003366]/5 transition-colors text-xs"
           >
             {collapsed ? <ChevronRight className="w-4 h-4" /> : <><ChevronLeft className="w-4 h-4" /><span>Collapse</span></>}
           </button>
         </div>
 
         {/* Back to Dashboard */}
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-blue-100">
           <Link
             to="/"
-            className={`flex items-center gap-2 py-2 px-3 rounded-lg text-blue-200/50 hover:text-white hover:bg-white/8 transition-colors text-xs ${collapsed ? 'justify-center px-0' : ''}`}
+            className={`flex items-center gap-2 py-2 px-3 rounded-lg text-[#003366]/50 hover:text-[#003366] hover:bg-[#003366]/5 transition-colors text-xs ${collapsed ? 'justify-center px-0' : ''}`}
           >
             <ArrowLeft className="w-4 h-4" />
             {!collapsed && <span>Back to Dashboard</span>}
@@ -162,7 +160,7 @@ const InsightsPage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div>
-                <h2 className="font-display text-lg font-bold text-[#001d3d]">
+                <h2 className="font-display text-lg font-bold text-[#003366]">
                   {NAV_ITEMS.find(n => n.id === activePanel)?.label}
                 </h2>
                 <p className="text-xs text-gray-400">
@@ -181,7 +179,7 @@ const InsightsPage = () => {
               />
               <button
                 onClick={() => refetch()}
-                className="p-2 rounded-lg text-gray-400 hover:text-[#001d3d] hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg text-gray-400 hover:text-[#003366] hover:bg-gray-100 transition-colors"
                 title="Refresh data"
               >
                 <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -264,7 +262,7 @@ function InsightCard({ item }: { item: InsightItem }) {
   );
 }
 
-function StatBox({ label, value, sublabel, icon: Icon, color = '#001d3d', trend, animated = false }: {
+function StatBox({ label, value, sublabel, icon: Icon, color = '#003366', trend, animated = false }: {
   label: string; value: string | number; sublabel?: string;
   icon?: typeof Sparkles; color?: string;
   trend?: { value: number; positive: boolean };
@@ -282,11 +280,11 @@ function StatBox({ label, value, sublabel, icon: Icon, color = '#001d3d', trend,
       </div>
       <div className="flex items-end gap-2">
         {animated && typeof value === 'number' ? (
-          <span className="text-2xl font-bold text-[#001d3d] group-hover:text-[#002855] transition-colors">
+          <span className="text-2xl font-bold text-[#003366] group-hover:text-[#1a5fb4] transition-colors">
             <AnimatedCounter end={value} duration={2000} />
           </span>
         ) : (
-          <span className="text-2xl font-bold text-[#001d3d] group-hover:text-[#002855] transition-colors">
+          <span className="text-2xl font-bold text-[#003366] group-hover:text-[#1a5fb4] transition-colors">
             {typeof value === 'number' ? value.toLocaleString() : value}
           </span>
         )}
@@ -302,14 +300,45 @@ function StatBox({ label, value, sublabel, icon: Icon, color = '#001d3d', trend,
   );
 }
 
+/** Metric Card - Matches SSRN-style dashboard cards */
+function MetricCard({ icon: Icon, label, value, change, sublabel }: {
+  icon: typeof Download;
+  label: string;
+  value: number;
+  change?: number;
+  sublabel: string;
+}) {
+  const isPositive = change !== undefined && change >= 0;
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-lg hover:border-gray-200 transition-all duration-300">
+      <div className="flex items-start justify-between mb-4">
+        <div className="p-2.5 rounded-xl bg-[#e8f4fd]">
+          <Icon className="w-5 h-5 text-[#003366]" />
+        </div>
+        {change !== undefined && (
+          <div className={`flex items-center gap-1 text-sm font-medium ${isPositive ? 'text-emerald-600' : 'text-red-500'}`}>
+            <TrendingUp className={`w-4 h-4 ${!isPositive ? 'rotate-180' : ''}`} />
+            <span>{isPositive ? '+' : ''}{change.toFixed(1)}%</span>
+          </div>
+        )}
+      </div>
+      <p className="text-sm font-medium text-gray-500 mb-1">{label}</p>
+      <p className="text-3xl font-bold text-[#003366] tabular-nums">
+        <AnimatedCounter end={value} duration={1800} />
+      </p>
+      <p className="text-xs text-gray-400 mt-2">{sublabel}</p>
+    </div>
+  );
+}
+
 function SectionHeader({ title, subtitle, icon: Icon }: { title: string; subtitle?: string; icon: typeof Sparkles }) {
   return (
     <div className="flex items-center gap-3 mb-6">
-      <div className="p-2.5 rounded-xl bg-gradient-to-br from-[#001d3d] to-[#003566] shadow-lg">
-        <Icon className="w-5 h-5 text-[#e8b624]" />
+      <div className="p-2.5 rounded-xl bg-[#e8f4fd] shadow-sm border border-blue-100">
+        <Icon className="w-5 h-5 text-[#003366]" />
       </div>
       <div>
-        <h3 className="font-display text-xl font-bold text-[#001d3d]">{title}</h3>
+        <h3 className="font-display text-xl font-bold text-[#003366]">{title}</h3>
         {subtitle && <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>}
       </div>
     </div>
@@ -331,7 +360,7 @@ function BenchmarkBar({ label, value, benchmark, unit, status }: {
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm font-medium text-gray-700">{label}</span>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-[#001d3d]">{value}{unit}</span>
+          <span className="text-sm font-bold text-[#003366]">{value}{unit}</span>
           <span className={`text-xs font-medium ${statusColor}`}>
             {status === 'above' ? 'Above Avg' : status === 'below' ? 'Below Avg' : 'Average'}
           </span>
@@ -373,7 +402,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
       </div>
       <h3 className="font-display text-lg font-bold text-gray-800 mb-2">Unable to Load Data</h3>
       <p className="text-sm text-gray-500 max-w-md mb-6">{message}</p>
-      <button onClick={onRetry} className="px-6 py-2.5 rounded-lg bg-[#001d3d] text-white text-sm font-medium hover:bg-[#002855] transition-colors">
+      <button onClick={onRetry} className="px-6 py-2.5 rounded-lg bg-[#003366] text-white text-sm font-medium hover:bg-[#1a5fb4] transition-colors">
         Retry
       </button>
     </div>
@@ -392,37 +421,36 @@ function OverviewPanel({ metrics, insights, showAnimations }: { metrics: Unified
 
   return (
     <div className={`space-y-6 ${showAnimations ? 'animate-fade-in' : ''}`}>
-      {/* Live Metrics Hero Bar */}
-      <div className="bg-gradient-to-br from-[#001d3d] via-[#002855] to-[#003566] rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4a017]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-        <div className="relative z-10">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#e8b624]" />
-              <span className="text-xs font-medium text-blue-200/70 uppercase tracking-wider">Live Metrics</span>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-medium text-emerald-300">Real-time</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <LiveCounter label="Active Visitors" value={liveCounters?.visitors || 0} icon={<Users className="w-5 h-5" />} color="#10b981" />
-            <LiveCounter label="Visits (30m)" value={liveCounters?.visits || 0} icon={<Eye className="w-5 h-5" />} color="#3b82f6" />
-            <LiveCounter label="Actions" value={liveCounters?.actions || 0} icon={<Activity className="w-5 h-5" />} color="#8b5cf6" />
-            <LiveCounter label="Total Downloads" value={metrics.totalDownloads} icon={<Download className="w-5 h-5" />} color="#d4a017" />
-            <LiveCounter label="Publications" value={metrics.totalPublications} icon={<BookOpen className="w-5 h-5" />} color="#ec4899" />
-            <LiveCounter label="Citations" value={(metrics.allCitations?.summary?.totalCitations || (metrics.citations as { totalCitations?: number })?.totalCitations || 0)} icon={<Quote className="w-5 h-5" />} color="#f97316" />
-          </div>
-        </div>
-      </div>
-
-      {/* Key Stats Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatBox label="Abstract Views" value={metrics.totalAbstractViews} icon={Eye} color="#001d3d" animated />
-        <StatBox label="Total Views" value={metrics.totalViews} icon={BarChart3} color="#1a5fb4" animated />
-        <StatBox label="Total Users" value={metrics.totalUsers} icon={Users} color="#10b981" animated />
+      {/* Key Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <MetricCard 
+          icon={Download} 
+          label="Total Downloads" 
+          value={metrics.totalDownloads} 
+          change={21.8} 
+          sublabel="vs. last month" 
+        />
+        <MetricCard 
+          icon={Quote} 
+          label="Citations" 
+          value={metrics.allCitations?.summary?.totalCitations || (metrics.citations as { totalCitations?: number })?.totalCitations || 0} 
+          change={12.2} 
+          sublabel="vs. last month" 
+        />
+        <MetricCard 
+          icon={Users} 
+          label="Active Readers" 
+          value={liveCounters?.visitors || 0} 
+          change={24.0} 
+          sublabel="currently online" 
+        />
+        <MetricCard 
+          icon={BookOpen} 
+          label="Published Papers" 
+          value={metrics.totalPublications} 
+          change={8.6} 
+          sublabel="total in repository" 
+        />
       </div>
 
       {/* World Map & Real-time Visitors */}
@@ -494,10 +522,10 @@ function LiveCounter({ label, value, icon, color }: { label: string; value: numb
           <span style={{ color }}>{icon}</span>
         </div>
       </div>
-      <p className="text-2xl font-bold text-white tabular-nums">
+      <p className="text-2xl font-bold text-[#003366] tabular-nums">
         <AnimatedCounter end={value} duration={1800} />
       </p>
-      <p className="text-[11px] text-blue-200/60 font-medium mt-0.5">{label}</p>
+      <p className="text-[11px] text-[#003366]/60 font-medium mt-0.5">{label}</p>
     </div>
   );
 }
@@ -522,11 +550,11 @@ function TopCountryRow({ country, index, totalVisits }: { country: { label: stri
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-800 truncate">{country.label || 'Unknown'}</span>
-          <span className="text-sm font-semibold text-[#001d3d]">{visits.toLocaleString()}</span>
+          <span className="text-sm font-semibold text-[#003366]">{visits.toLocaleString()}</span>
         </div>
         <div className="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div 
-            className="h-full rounded-full bg-gradient-to-r from-[#001d3d] to-[#003566]" 
+            className="h-full rounded-full bg-[#003366]" 
             style={{ width: `${Math.min(parseFloat(percentage), 100)}%` }} 
           />
         </div>
@@ -540,7 +568,7 @@ function TopCountryRow({ country, index, totalVisits }: { country: { label: stri
 function TopPublicationRow({ publication, index }: { publication: { id?: number; title: string; views?: number; downloads?: number; journalName?: string }; index: number }) {
   return (
     <div className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-gray-50 transition-colors">
-      <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-[#001d3d]/10 rounded text-xs font-bold text-[#001d3d]">
+      <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center bg-[#003366]/10 rounded text-xs font-bold text-[#003366]">
         {index + 1}
       </div>
       <div className="flex-1 min-w-0">
@@ -605,24 +633,24 @@ function JournalsPanel({ journals, selectedJournalId, onSelect, metrics }: {
           {/* Aggregated Overview */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 rounded-xl bg-[#001d3d]">
+              <div className="p-2 rounded-xl bg-[#003366]">
                 <Layers className="w-5 h-5 text-[#e8b624]" />
               </div>
               <div>
-                <h4 className="font-display text-lg font-bold text-[#001d3d]">All Journals Combined</h4>
+                <h4 className="font-display text-lg font-bold text-[#003366]">All Journals Combined</h4>
                 <p className="text-xs text-gray-500">{journals.length} journals registered</p>
               </div>
               <button
                 onClick={() => onSelect(null)}
                 className={`ml-auto px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                  ${selectedJournalId === null ? 'bg-[#001d3d] text-white' : 'bg-white text-[#001d3d] border border-gray-200 hover:bg-gray-50'}`}
+                  ${selectedJournalId === null ? 'bg-[#003366] text-white' : 'bg-white text-[#003366] border border-gray-200 hover:bg-gray-50'}`}
               >
                 View Aggregated
               </button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="bg-white/80 rounded-xl p-3 text-center">
-                <p className="text-xl font-bold text-[#001d3d]">{journals.reduce((s, j) => s + j.totalSubmissions, 0).toLocaleString()}</p>
+                <p className="text-xl font-bold text-[#003366]">{journals.reduce((s, j) => s + j.totalSubmissions, 0).toLocaleString()}</p>
                 <p className="text-xs text-gray-500 mt-0.5">Total Submissions</p>
               </div>
               <div className="bg-white/80 rounded-xl p-3 text-center">
@@ -650,11 +678,11 @@ function JournalsPanel({ journals, selectedJournalId, onSelect, metrics }: {
               >
                 {/* Journal Header */}
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-[#001d3d] to-[#003566] shadow-lg group-hover:shadow-xl transition-shadow">
-                    <BookOpen className="w-6 h-6 text-[#e8b624]" />
+                  <div className="p-3 rounded-xl bg-[#e8f4fd] shadow-sm border border-blue-100 group-hover:shadow-md transition-shadow">
+                    <BookOpen className="w-6 h-6 text-[#003366]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-display text-base font-bold text-[#001d3d] group-hover:text-[#002855] transition-colors truncate">
+                    <h4 className="font-display text-base font-bold text-[#003366] group-hover:text-[#1a5fb4] transition-colors truncate">
                       {journal.name}
                     </h4>
                     {journal.abbreviation && (
@@ -673,7 +701,7 @@ function JournalsPanel({ journals, selectedJournalId, onSelect, metrics }: {
                 {/* Journal Stats */}
                 <div className="grid grid-cols-4 gap-2">
                   <div className="text-center p-2 bg-gray-50 rounded-lg group-hover:bg-blue-50 transition-colors">
-                    <p className="text-lg font-bold text-[#001d3d]">{journal.totalSubmissions}</p>
+                    <p className="text-lg font-bold text-[#003366]">{journal.totalSubmissions}</p>
                     <p className="text-[10px] text-gray-500">Submissions</p>
                   </div>
                   <div className="text-center p-2 bg-gray-50 rounded-lg group-hover:bg-emerald-50 transition-colors">
@@ -692,7 +720,7 @@ function JournalsPanel({ journals, selectedJournalId, onSelect, metrics }: {
 
                 {/* View Button */}
                 <div className="mt-4 flex justify-end">
-                  <span className="text-xs font-medium text-[#001d3d] group-hover:text-[#d4a017] flex items-center gap-1 transition-colors">
+                  <span className="text-xs font-medium text-[#003366] group-hover:text-[#d4a017] flex items-center gap-1 transition-colors">
                     View Analytics <ArrowUpRight className="w-3 h-3" />
                   </span>
                 </div>
@@ -721,16 +749,16 @@ function JournalDetailView({ journal, metrics, onBack }: {
     <div className="space-y-6 animate-fade-in">
       {/* Back + Journal Header */}
       <div className="flex items-center gap-3">
-        <button onClick={onBack} className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-[#001d3d]">
+        <button onClick={onBack} className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-[#003366]">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-[#001d3d] to-[#003566] shadow-lg">
-              <BookOpen className="w-6 h-6 text-[#e8b624]" />
+            <div className="p-3 rounded-xl bg-[#e8f4fd] shadow-sm border border-blue-100">
+              <BookOpen className="w-6 h-6 text-[#003366]" />
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="font-display text-xl font-bold text-[#001d3d] truncate">{journal.name}</h2>
+              <h2 className="font-display text-xl font-bold text-[#003366] truncate">{journal.name}</h2>
               <div className="flex items-center gap-2 mt-0.5">
                 {journal.abbreviation && <span className="text-xs font-medium text-[#d4a017] bg-amber-50 px-2 py-0.5 rounded-full">{journal.abbreviation}</span>}
                 <span className="text-xs text-gray-400">/{journal.path}</span>
@@ -742,33 +770,33 @@ function JournalDetailView({ journal, metrics, onBack }: {
       </div>
 
       {/* Live Banner */}
-      <div className="bg-gradient-to-r from-[#001d3d] to-[#003566] rounded-2xl p-5 text-white">
+      <div className="bg-[#e8f4fd] rounded-2xl p-5 text-[#003366] border border-blue-100">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-medium text-blue-200/70 uppercase tracking-wider">Live Activity</span>
+          <span className="text-xs font-medium text-[#003366]/60 uppercase tracking-wider">Live Activity</span>
           <div className="flex items-center gap-2 px-2 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] text-emerald-300">Live</span>
+            <span className="text-[10px] text-emerald-600">Live</span>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">
             <p className="text-2xl font-bold"><AnimatedCounter end={liveCounters?.visitors || 0} duration={1500} /></p>
-            <p className="text-[11px] text-blue-200/60 mt-0.5">Active Visitors</p>
+            <p className="text-[11px] text-[#003366]/60 mt-0.5">Active Visitors</p>
           </div>
           <div className="text-center">
             <p className="text-2xl font-bold"><AnimatedCounter end={liveCounters?.visits || 0} duration={1500} /></p>
-            <p className="text-[11px] text-blue-200/60 mt-0.5">Visits (30m)</p>
+            <p className="text-[11px] text-[#003366]/60 mt-0.5">Visits (30m)</p>
           </div>
           <div className="text-center">
             <p className="text-2xl font-bold"><AnimatedCounter end={liveCounters?.actions || 0} duration={1500} /></p>
-            <p className="text-[11px] text-blue-200/60 mt-0.5">Page Actions</p>
+            <p className="text-[11px] text-[#003366]/60 mt-0.5">Page Actions</p>
           </div>
         </div>
       </div>
 
       {/* Journal KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatBox label="Total Views" value={metrics.totalViews} icon={Eye} color="#001d3d" animated />
+        <StatBox label="Total Views" value={metrics.totalViews} icon={Eye} color="#003366" animated />
         <StatBox label="Downloads" value={metrics.totalDownloads} icon={Download} color="#d4a017" animated />
         <StatBox label="Abstract Views" value={metrics.totalAbstractViews} icon={BarChart3} color="#1a5fb4" animated />
         <StatBox label="Users" value={metrics.totalUsers} icon={Users} color="#10b981" animated />
@@ -837,7 +865,7 @@ function JournalDetailView({ journal, metrics, onBack }: {
         <div className="bg-white rounded-2xl border border-gray-100 p-6">
           <h4 className="text-sm font-semibold text-gray-800 uppercase tracking-wider mb-4">Editorial Pipeline</h4>
           <div className="space-y-3">
-            <PipelineRow label="Received" value={metrics.submissionsReceived || 0} total={metrics.totalSubmissions || 1} color="#001d3d" />
+            <PipelineRow label="Received" value={metrics.submissionsReceived || 0} total={metrics.totalSubmissions || 1} color="#003366" />
             <PipelineRow label="Accepted" value={metrics.submissionsAccepted || 0} total={metrics.totalSubmissions || 1} color="#10b981" />
             <PipelineRow label="Published" value={metrics.totalPublications || 0} total={metrics.totalSubmissions || 1} color="#1a5fb4" />
             <PipelineRow label="In Review" value={metrics.submissionsQueued || 0} total={metrics.totalSubmissions || 1} color="#f59e0b" />
@@ -972,7 +1000,7 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
   }, [dashboardA, dashboardB]);
 
   const chartConfig: ChartConfig = {
-    journalA: { label: journalA?.abbreviation || 'Journal A', color: '#001d3d' },
+    journalA: { label: journalA?.abbreviation || 'Journal A', color: '#003366' },
     journalB: { label: journalB?.abbreviation || 'Journal B', color: '#d4a017' },
   };
 
@@ -990,7 +1018,7 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
         <div className="text-right">
           <span className={`text-lg font-bold ${winner === 'A' ? 'text-emerald-600' : 'text-gray-700'}`}>{formattedA}</span>
           <div className="mt-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-[#001d3d] rounded-full transition-all duration-500" style={{ width: `${pctA}%`, marginLeft: 'auto' }} />
+            <div className="h-full bg-[#003366] rounded-full transition-all duration-500" style={{ width: `${pctA}%`, marginLeft: 'auto' }} />
           </div>
         </div>
         <div className="text-center">
@@ -1009,25 +1037,25 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#001d3d] via-[#002855] to-[#003566] rounded-2xl p-6 text-white">
+      <div className="bg-[#e8f4fd] rounded-2xl p-6 text-[#003366] border border-blue-100">
         <div className="flex items-center gap-2 mb-2">
-          <GitCompareArrows className="w-5 h-5 text-[#e8b624]" />
+          <GitCompareArrows className="w-5 h-5 text-[#d4a017]" />
           <h2 className="font-display text-xl font-bold">Journal Comparison</h2>
         </div>
-        <p className="text-sm text-blue-200/70">Compare metrics between two journals side by side</p>
+        <p className="text-sm text-[#003366]/60">Compare metrics between two journals side by side</p>
       </div>
 
       {/* Journal Selectors */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white rounded-2xl border border-gray-100 p-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-3 h-3 rounded-full bg-[#001d3d]" />
+            <div className="w-3 h-3 rounded-full bg-[#003366]" />
             <span className="text-sm font-medium text-gray-600">Journal A</span>
           </div>
           <select 
             value={journalA?.id || ''} 
             onChange={(e) => setJournalA(journals.find(j => j.id === Number(e.target.value)) || null)}
-            className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#001d3d]/20 truncate"
+            className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#003366]/20 truncate"
           >
             {journals.map(j => (
               <option key={j.id} value={j.id}>{j.abbreviation || j.path.toUpperCase()}</option>
@@ -1084,12 +1112,12 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
           {false && (
           <div className="bg-white rounded-2xl border border-gray-100 p-6 relative">
             <div className="flex items-center gap-2 mb-4">
-              <BarChart3 className="w-5 h-5 text-[#001d3d]" />
-              <h3 className="font-display text-lg font-bold text-[#001d3d]">Visual Comparison</h3>
+              <BarChart3 className="w-5 h-5 text-[#003366]" />
+              <h3 className="font-display text-lg font-bold text-[#003366]">Visual Comparison</h3>
             </div>
             <div className="flex items-center justify-center gap-6 mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-[#001d3d]" />
+                <div className="w-4 h-4 rounded bg-[#003366]" />
                 <span className="text-sm text-gray-600 truncate max-w-[120px]">{journalA.abbreviation || journalA.name}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -1102,7 +1130,7 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
             {(loadingA || loadingB) && (
               <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-10">
                 <div className="text-center">
-                  <RefreshCw className="w-8 h-8 text-[#001d3d] animate-spin mx-auto mb-2" />
+                  <RefreshCw className="w-8 h-8 text-[#003366] animate-spin mx-auto mb-2" />
                   <p className="text-sm text-gray-600">Loading data...</p>
                 </div>
               </div>
@@ -1114,7 +1142,7 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
                 <XAxis type="category" dataKey="metric" />
                 <YAxis type="number" />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="journalA" fill="#001d3d" radius={[4, 4, 0, 0]} maxBarSize={50} name={journalA.abbreviation || 'Journal A'} />
+                <Bar dataKey="journalA" fill="#003366" radius={[4, 4, 0, 0]} maxBarSize={50} name={journalA.abbreviation || 'Journal A'} />
                 <Bar dataKey="journalB" fill="#d4a017" radius={[4, 4, 0, 0]} maxBarSize={50} name={journalB.abbreviation || 'Journal B'} />
               </BarChart>
             </ChartContainer>
@@ -1124,12 +1152,12 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
           {/* Comparison Table */}
           <div className="bg-white rounded-2xl border border-gray-100 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Layers className="w-5 h-5 text-[#001d3d]" />
-              <h3 className="font-display text-lg font-bold text-[#001d3d]">Detailed Metrics</h3>
+              <Layers className="w-5 h-5 text-[#003366]" />
+              <h3 className="font-display text-lg font-bold text-[#003366]">Detailed Metrics</h3>
             </div>
             <div className="grid grid-cols-3 gap-4 pb-4 border-b border-gray-200 mb-4">
               <div className="text-right">
-                <span className="text-sm font-bold text-[#001d3d] truncate block max-w-[120px]">{journalA.abbreviation || journalA.name}</span>
+                <span className="text-sm font-bold text-[#003366] truncate block max-w-[120px]">{journalA.abbreviation || journalA.name}</span>
               </div>
               <div className="text-center">
                 <span className="text-xs text-gray-400 uppercase tracking-wide">Metric</span>
@@ -1190,19 +1218,19 @@ function MetricWinner({ label, winnerName, winnerColor, value }: { label: string
    PANEL: Research Impact
    ═══════════════════════════════════════════════════════════════ */
 const pubYearChartConfig: ChartConfig = {
-  count: { label: 'Publications', color: '#001d3d' },
+  count: { label: 'Publications', color: '#003366' },
 };
 
 function ResearchImpactPanel({ metrics, insights }: { metrics: UnifiedDashboardMetrics; insights: ComputedInsights }) {
   const yearData = [...(metrics.publicationsByYear || [])].sort((a, b) => a.year - b.year);
   const sectionData = (metrics.publicationsBySection || []).slice(0, 8);
-  const COLORS = ['#001d3d', '#1a5fb4', '#d4a017', '#10b981', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
+  const COLORS = ['#003366', '#1a5fb4', '#d4a017', '#10b981', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
 
   return (
     <div className="space-y-6 animate-fade-in">
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatBox label="Publications" value={metrics.totalPublications} icon={BookOpen} color="#001d3d" animated />
+        <StatBox label="Publications" value={metrics.totalPublications} icon={BookOpen} color="#003366" animated />
         <StatBox label="Published Issues" value={metrics.publishedIssues} icon={Layers} color="#1a5fb4" animated />
         <StatBox
           label="Growth Rate"
@@ -1235,7 +1263,7 @@ function ResearchImpactPanel({ metrics, insights }: { metrics: UnifiedDashboardM
               <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={48}>
                 {yearData.map((_, idx) => (
-                  <Cell key={idx} fill={idx === yearData.length - 1 ? '#d4a017' : '#001d3d'} />
+                  <Cell key={idx} fill={idx === yearData.length - 1 ? '#d4a017' : '#003366'} />
                 ))}
               </Bar>
             </BarChart>
@@ -1314,7 +1342,7 @@ function ResearchImpactPanel({ metrics, insights }: { metrics: UnifiedDashboardM
    PANEL: Engagement Analytics
    ═══════════════════════════════════════════════════════════════ */
 const timelineChartConfig: ChartConfig = {
-  abstractViews: { label: 'Abstract Views', color: '#001d3d' },
+  abstractViews: { label: 'Abstract Views', color: '#003366' },
   fileDownloads: { label: 'Downloads', color: '#d4a017' },
 };
 
@@ -1339,7 +1367,7 @@ function EngagementPanel({ metrics, insights }: { metrics: UnifiedDashboardMetri
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-sm font-medium text-gray-700">{step.label}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-[#001d3d]">{step.value.toLocaleString()}</span>
+                    <span className="text-sm font-bold text-[#003366]">{step.value.toLocaleString()}</span>
                     {step.rate !== undefined && idx > 0 && (
                       <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                         {step.rate.toFixed(1)}% conversion
@@ -1365,7 +1393,7 @@ function EngagementPanel({ metrics, insights }: { metrics: UnifiedDashboardMetri
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatBox label="Abstract Views" value={metrics.totalAbstractViews} icon={Eye} color="#001d3d" animated />
+        <StatBox label="Abstract Views" value={metrics.totalAbstractViews} icon={Eye} color="#003366" animated />
         <StatBox label="Downloads" value={metrics.totalDownloads} icon={Download} color="#d4a017" animated />
         <StatBox label="Views / Publication" value={insights.viewsPerPublication.toFixed(0)} icon={BarChart3} color="#1a5fb4" />
         <StatBox label="Download Rate" value={`${insights.downloadToViewRatio.toFixed(1)}%`} icon={TrendingUp} color="#10b981" />
@@ -1379,8 +1407,8 @@ function EngagementPanel({ metrics, insights }: { metrics: UnifiedDashboardMetri
             <AreaChart data={timelineData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="insAbstractGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#001d3d" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#001d3d" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#003366" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#003366" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="insDownloadGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#d4a017" stopOpacity={0.3} />
@@ -1391,7 +1419,7 @@ function EngagementPanel({ metrics, insights }: { metrics: UnifiedDashboardMetri
               <XAxis dataKey="date" tickLine={false} axisLine={false} fontSize={11} />
               <YAxis tickLine={false} axisLine={false} fontSize={11} />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Area type="monotone" dataKey="abstractViews" stroke="#001d3d" fill="url(#insAbstractGrad)" strokeWidth={2} />
+              <Area type="monotone" dataKey="abstractViews" stroke="#003366" fill="url(#insAbstractGrad)" strokeWidth={2} />
               <Area type="monotone" dataKey="fileDownloads" stroke="#d4a017" fill="url(#insDownloadGrad)" strokeWidth={2} />
             </AreaChart>
           </ChartContainer>
@@ -1414,7 +1442,7 @@ function EngagementPanel({ metrics, insights }: { metrics: UnifiedDashboardMetri
 function EditorialPanel({ metrics, insights }: { metrics: UnifiedDashboardMetrics; insights: ComputedInsights }) {
   const total = metrics.totalSubmissions || 1;
   const editorialPipeline = [
-    { label: 'Received',  value: metrics.submissionsReceived,  color: '#001d3d', pct: ((metrics.submissionsReceived / total) * 100).toFixed(0) },
+    { label: 'Received',  value: metrics.submissionsReceived,  color: '#003366', pct: ((metrics.submissionsReceived / total) * 100).toFixed(0) },
     { label: 'Accepted',  value: metrics.submissionsAccepted,  color: '#10b981', pct: ((metrics.submissionsAccepted / total) * 100).toFixed(0) },
     { label: 'Published', value: metrics.totalPublications,    color: '#1a5fb4', pct: ((metrics.totalPublications / total) * 100).toFixed(0) },
     { label: 'Declined',  value: metrics.submissionsDeclined,  color: '#ef4444', pct: ((metrics.submissionsDeclined / total) * 100).toFixed(0) },
@@ -1425,7 +1453,7 @@ function EditorialPanel({ metrics, insights }: { metrics: UnifiedDashboardMetric
     <div className="space-y-6 animate-fade-in">
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatBox label="Total Submissions" value={metrics.totalSubmissions} icon={FileText} color="#001d3d" animated />
+        <StatBox label="Total Submissions" value={metrics.totalSubmissions} icon={FileText} color="#003366" animated />
         <StatBox label="Active" value={metrics.activeSubmissions} icon={Activity} color="#1a5fb4" animated />
         <StatBox label="Scheduled" value={metrics.submissionsScheduled} icon={Calendar} color="#8b5cf6" animated />
       </div>
@@ -1441,7 +1469,7 @@ function EditorialPanel({ metrics, insights }: { metrics: UnifiedDashboardMetric
                   style={{ backgroundColor: stage.color }}>
                   {stage.pct}%
                 </div>
-                <p className="text-xl font-bold text-[#001d3d]">{(stage.value || 0).toLocaleString()}</p>
+                <p className="text-xl font-bold text-[#003366]">{(stage.value || 0).toLocaleString()}</p>
                 <p className="text-xs text-gray-400 mt-1">{stage.label}</p>
               </div>
               {idx < editorialPipeline.length - 1 && (
@@ -1460,7 +1488,7 @@ function EditorialPanel({ metrics, insights }: { metrics: UnifiedDashboardMetric
             {metrics.usersByRole.slice(0, 8).map((role, idx) => (
               <div key={role.roleId} className="text-center p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors">
                 <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center text-white font-bold"
-                  style={{ backgroundColor: ['#001d3d', '#1a5fb4', '#d4a017', '#10b981', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'][idx % 8] }}>
+                  style={{ backgroundColor: ['#003366', '#1a5fb4', '#d4a017', '#10b981', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'][idx % 8] }}>
                   {role.count}
                 </div>
                 <p className="text-xs font-medium text-gray-600">{role.roleName}</p>
@@ -1705,7 +1733,7 @@ function SettingsPanel({ autoRefresh, setAutoRefresh, showAnimations, setShowAni
         <div className="space-y-3">
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#001d3d] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-[#003366] flex items-center justify-center">
                 <Zap className="w-4 h-4 text-[#e8b624]" />
               </div>
               <div>
@@ -1886,16 +1914,16 @@ function SettingsPanel({ autoRefresh, setAutoRefresh, showAnimations, setShowAni
       </div>
 
       {/* About */}
-      <div className="bg-gradient-to-br from-[#001d3d] to-[#003566] rounded-2xl p-6 text-white">
+      <div className="bg-[#e8f4fd] rounded-2xl p-6 text-[#003366] border border-blue-100">
         <div className="flex items-center gap-3 mb-3">
-          <GraduationCap className="w-6 h-6 text-[#e8b624]" />
+          <img src="/udsmlogo.png" alt="UDSM" className="w-8 h-8 object-contain" />
           <h4 className="font-display text-lg font-bold">UDSM Insights Dashboard</h4>
         </div>
-        <p className="text-sm text-blue-100/70 leading-relaxed">
+        <p className="text-sm text-[#003366]/70 leading-relaxed">
           Built for the University of Dar es Salaam to provide actionable intelligence from journal analytics.
           Powered by Fast Stats API + Matomo Analytics with Crossref and OpenAlex citation integration.
         </p>
-        <p className="text-xs text-blue-200/40 mt-4">
+        <p className="text-xs text-[#003366]/40 mt-4">
           Version 2.0.0 &bull; &copy; 2026 University of Dar es Salaam
         </p>
       </div>

@@ -33,25 +33,25 @@ const formatNumber = (num: number) => {
   return num.toString();
 };
 
-// Gray/Light Blue color palette (matching DownloadsMapWidget)
+// UDSM Design System Colors - Light Blue Theme
 const colorPalette = {
   noData: '#cbd5e1',       // Light gray for all countries
   stroke: '#94a3b8',       // Blue-gray stroke
   hover: '#b8c5d6',        // Light blue-gray hover
-  highlight: '#3b82f6',    // Blue highlight
-  base: '#001d3d',         // UDSM Navy
-  ocean: '#e8f0f4',        // Light blue ocean background
+  highlight: '#003366',    // UDSM Blue highlight
+  base: '#003366',         // UDSM Blue (Primary)
+  ocean: '#e8f4fd',        // Light blue ocean background
   gradient: [
-    '#e0f2fe',  // Lightest blue
+    '#f0f9ff',  // Lightest blue
+    '#e0f2fe',
     '#bae6fd',
     '#7dd3fc',
     '#38bdf8',
     '#0ea5e9',
     '#0284c7',
     '#0369a1',
-    '#075985',
-    '#0c4a6e',
-    '#001d3d',  // UDSM Navy (most visitors)
+    '#1a5fb4',
+    '#003366',  // UDSM Blue (most visitors)
   ],
 };
 
@@ -323,7 +323,7 @@ const WorldMap = () => {
 
   if (error) {
     return (
-      <div className="h-[400px] flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl">
+      <div className="h-[400px] flex items-center justify-center bg-[#e8f4fd] rounded-xl border border-blue-100">
         <div className="text-center text-slate-400">
           <Globe className="w-12 h-12 mx-auto mb-3 opacity-30" />
           <p className="text-sm font-medium">Unable to load map data</p>
@@ -334,12 +334,12 @@ const WorldMap = () => {
   }
 
   return (
-    <div className="relative bg-gradient-to-b from-[#e8f0f4] to-[#d8e4ed] rounded-xl overflow-hidden border border-gray-100">
+    <div className="relative bg-[#e8f4fd] rounded-xl overflow-hidden border border-blue-100">
       {/* Loading overlay */}
       {isLoading && (
         <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex items-center justify-center">
           <div className="text-center">
-            <div className="w-10 h-10 border-3 border-[#001d3d] border-t-transparent rounded-full animate-spin mx-auto mb-3" style={{ borderWidth: '3px' }} />
+            <div className="w-10 h-10 border-3 border-[#003366] border-t-transparent rounded-full animate-spin mx-auto mb-3" style={{ borderWidth: '3px' }} />
             <p className="text-sm text-slate-600">Loading map data...</p>
           </div>
         </div>
@@ -421,7 +421,7 @@ const WorldMap = () => {
                     r={dotSize}
                     fill="#d4a017"
                     fillOpacity={1}
-                    stroke="#001d3d"
+                    stroke="#003366"
                     strokeWidth={(isActive || isHovered) ? 3 : 2}
                     className={(isActive || isHovered) ? 'animate-pulse' : ''}
                   />
@@ -454,21 +454,21 @@ const WorldMap = () => {
       <div className="absolute top-4 right-4 flex flex-col gap-1.5 z-10">
         <button
           onClick={handleZoomIn}
-          className="w-8 h-8 rounded-lg bg-white/95 hover:bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 hover:text-[#001d3d] transition-all hover:scale-105"
+          className="w-8 h-8 rounded-lg bg-white/95 hover:bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 hover:text-[#003366] transition-all hover:scale-105"
           title="Zoom in"
         >
           <span className="text-lg font-medium leading-none">+</span>
         </button>
         <button
           onClick={handleZoomOut}
-          className="w-8 h-8 rounded-lg bg-white/95 hover:bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 hover:text-[#001d3d] transition-all hover:scale-105"
+          className="w-8 h-8 rounded-lg bg-white/95 hover:bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 hover:text-[#003366] transition-all hover:scale-105"
           title="Zoom out"
         >
           <span className="text-lg font-medium leading-none">−</span>
         </button>
         <button
           onClick={handleReset}
-          className="w-8 h-8 rounded-lg bg-white/95 hover:bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 hover:text-[#001d3d] transition-all hover:scale-105"
+          className="w-8 h-8 rounded-lg bg-white/95 hover:bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-600 hover:text-[#003366] transition-all hover:scale-105"
           title="Reset view"
         >
           <Globe className="w-4 h-4" />
@@ -481,7 +481,7 @@ const WorldMap = () => {
           {selectedPeriod === 'live' ? 'Live Activity' : 'Visitor Activity'}
         </p>
         <div className="flex items-center gap-2">
-          <div className={`w-3 h-3 rounded-full bg-[#d4a017] border-2 border-[#001d3d] ${selectedPeriod === 'live' ? 'animate-pulse' : ''}`}></div>
+          <div className={`w-3 h-3 rounded-full bg-[#d4a017] border-2 border-[#003366] ${selectedPeriod === 'live' ? 'animate-pulse' : ''}`}></div>
           <span className="text-[10px] text-gray-600">
             {selectedPeriod === 'live' ? 'Active readers' : `Readers (${periodOptions.find(p => p.value === selectedPeriod)?.label})`}
           </span>
@@ -507,8 +507,8 @@ const WorldMap = () => {
               </div>
               <div className="w-px h-3 bg-gray-200" />
               <div className="flex items-center gap-1">
-                <Eye className="w-3 h-3 text-[#001d3d]" />
-                <span className="text-xs font-bold text-[#001d3d]">{liveStats.actions}</span>
+                <Eye className="w-3 h-3 text-[#003366]" />
+                <span className="text-xs font-bold text-[#003366]">{liveStats.actions}</span>
                 <span className="text-[9px] text-gray-500">Actions</span>
               </div>
             </div>
@@ -516,8 +516,8 @@ const WorldMap = () => {
             // Period mode: Show country stats
             <div className="flex items-center gap-2.5">
               <div className="flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-[#001d3d]" />
-                <span className="text-xs font-bold text-[#001d3d]">{countries.length}</span>
+                <MapPin className="w-3 h-3 text-[#003366]" />
+                <span className="text-xs font-bold text-[#003366]">{countries.length}</span>
                 <span className="text-[9px] text-gray-500">countries</span>
               </div>
               <div className="w-px h-3 bg-gray-200" />
@@ -540,8 +540,8 @@ const WorldMap = () => {
             onClick={() => setShowDropdown(!showDropdown)}
             className="flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 hover:border-blue-300 transition-all"
           >
-            <Clock className="w-3.5 h-3.5 text-[#001d3d]" />
-            <span className="text-xs font-semibold text-[#001d3d]">
+            <Clock className="w-3.5 h-3.5 text-[#003366]" />
+            <span className="text-xs font-semibold text-[#003366]">
               {periodOptions.find(p => p.value === selectedPeriod)?.label}
             </span>
             <ChevronDown className={`w-3.5 h-3.5 text-gray-500 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
@@ -561,7 +561,7 @@ const WorldMap = () => {
                   }}
                   className={`w-full px-3 py-2 text-left text-xs font-medium transition-colors flex items-center gap-2
                     ${selectedPeriod === option.value 
-                      ? 'bg-blue-50 text-[#001d3d]' 
+                      ? 'bg-blue-50 text-[#003366]' 
                       : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   {option.value === 'live' && (
@@ -590,7 +590,7 @@ const WorldMap = () => {
           <div className="bg-white rounded-xl shadow-2xl border border-gray-100 p-3.5 min-w-[160px]">
             <div className="flex items-center gap-2.5 mb-2.5 pb-2 border-b border-gray-100">
               <span className="text-xl">{getCountryFlag(tooltipData.countryCode)}</span>
-              <p className="font-bold text-[#001d3d] text-sm leading-tight">{tooltipData.name}</p>
+              <p className="font-bold text-[#003366] text-sm leading-tight">{tooltipData.name}</p>
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
@@ -598,21 +598,21 @@ const WorldMap = () => {
                   <Eye className="w-2.5 h-2.5" />
                   Visits
                 </span>
-                <span className="text-xs font-bold text-[#001d3d]">{tooltipData.visits.toLocaleString()}</span>
+                <span className="text-xs font-bold text-[#003366]">{tooltipData.visits.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1 text-[10px] text-gray-500">
                   <Users className="w-2.5 h-2.5" />
                   Visitors
                 </span>
-                <span className="text-xs font-bold text-[#001d3d]">{tooltipData.visitors.toLocaleString()}</span>
+                <span className="text-xs font-bold text-[#003366]">{tooltipData.visitors.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1 text-[10px] text-gray-500">
                   <Clock className="w-2.5 h-2.5" />
                   Actions
                 </span>
-                <span className="text-xs font-bold text-[#001d3d]">{tooltipData.actions.toLocaleString()}</span>
+                <span className="text-xs font-bold text-[#003366]">{tooltipData.actions.toLocaleString()}</span>
               </div>
             </div>
           </div>
