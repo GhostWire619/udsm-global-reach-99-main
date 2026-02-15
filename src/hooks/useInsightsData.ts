@@ -150,7 +150,7 @@ export function computeInsights(metrics: UnifiedDashboardMetrics | undefined): C
 
   // ── Engagement Funnel ─────────────────────────
   const funnelSteps: FunnelStep[] = [
-    { label: 'Page Views', value: totalAllViews, color: '#003366' },
+    { label: 'Page Views', value: totalAllViews, color: '#235dcb' },
     { label: 'Abstract Views', value: totalViews, rate: totalAllViews > 0 ? (totalViews / totalAllViews) * 100 : 0, color: '#1a5fb4' },
     { label: 'Downloads', value: totalDownloads, rate: totalViews > 0 ? (totalDownloads / totalViews) * 100 : 0, color: '#d4a017' },
     { label: 'Citations', value: totalCitations, rate: totalDownloads > 0 ? (totalCitations / totalDownloads) * 100 : 0, color: '#10b981' },
