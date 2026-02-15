@@ -68,11 +68,8 @@ if (-not (Test-Path $DistDir)) {
 # Copy all dist files to assets
 Copy-Item "$DistDir/*" "$PluginOutputDir/assets/" -Recurse -Force
 
-# Also copy the logo
-$LogoPath = Join-Path $ProjectRoot "public/udsmlogo.png"
-if (Test-Path $LogoPath) {
-    Copy-Item $LogoPath "$PluginOutputDir/assets/" -Force
-}
+# Note: Skip copying the large logo (919KB) - not needed for plugin operation
+# If a logo is needed, use a compressed version or load from URL
 Write-Host "      Assets copied!" -ForegroundColor Green
 
 # Step 5: Create archive (if tar is available)
