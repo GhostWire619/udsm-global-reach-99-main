@@ -258,6 +258,7 @@ const DownloadsMapWidget = ({
 
       {/* Map Container */}
       <div className="relative h-[280px] bg-[#e8f4fd] overflow-hidden">
+      <div className="relative h-[280px] bg-[#e8f4fd] overflow-hidden">
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{

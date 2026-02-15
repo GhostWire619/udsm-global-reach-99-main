@@ -110,7 +110,7 @@ const InsightsPage = () => {
           bg-gradient-to-b from-[#235dcb] via-[#1a4d9e] to-[#2f6fd9] text-white shadow-2xl`}
       >
         {/* Brand */}
-        <div className={`flex items-center gap-3 px-4 py-5 border-b border-white/10 ${collapsed ? 'justify-center' : ''}`}>
+        <div className={`flex items-center gap-3 px-4 py-5 border-b border-blue-100 ${collapsed ? 'justify-center' : ''}`}>
           <div className="relative">
             <div className="w-14 h-14 rounded-full bg-white/95 flex items-center justify-center shadow-lg">
               <img src="/udsmlogo.png" alt="UDSM" className="w-10 h-10 object-contain" />
@@ -165,7 +165,7 @@ const InsightsPage = () => {
         </nav>
 
         {/* Collapse Toggle */}
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-blue-100">
           <button
             onClick={() => setCollapsed(c => !c)}
             className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-blue-200/50 hover:text-white hover:bg-white/10 transition-colors text-xs"
@@ -175,7 +175,7 @@ const InsightsPage = () => {
         </div>
 
         {/* Back to Dashboard */}
-        <div className="p-3 border-t border-white/10">
+        <div className="p-3 border-t border-blue-100">
           <Link
             to="/"
             className={`flex items-center gap-2 py-2 px-3 rounded-lg text-blue-200/50 hover:text-white hover:bg-white/10 transition-colors text-xs ${collapsed ? 'justify-center px-0' : ''}`}
@@ -825,6 +825,7 @@ function JournalDetailView({ journal, metrics, onBack }: {
           <div className="flex items-center gap-2 px-2 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-[10px] text-emerald-600">Live</span>
+            <span className="text-[10px] text-emerald-600">Live</span>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
@@ -1088,6 +1089,7 @@ function ComparisonPanel({ journals }: { journals: FastStatsJournalStats[] }) {
       {/* Header */}
       <div className="bg-[#e8f4fd] rounded-2xl p-6 text-[#235dcb] border border-blue-100">
         <div className="flex items-center gap-2 mb-2">
+          <GitCompareArrows className="w-5 h-5 text-[#d4a017]" />
           <GitCompareArrows className="w-5 h-5 text-[#d4a017]" />
           <h2 className="font-display text-xl font-bold">Journal Comparison</h2>
         </div>
@@ -1970,6 +1972,7 @@ function SettingsPanel({ autoRefresh, setAutoRefresh, showAnimations, setShowAni
       {/* About */}
       <div className="bg-[#e8f4fd] rounded-2xl p-6 text-[#235dcb] border border-blue-100">
         <div className="flex items-center gap-3 mb-3">
+          <img src="/udsmlogo.png" alt="UDSM" className="w-8 h-8 object-contain" />
           <img src="/udsmlogo.png" alt="UDSM" className="w-8 h-8 object-contain" />
           <h4 className="font-display text-lg font-bold">UDSM Insights Dashboard</h4>
         </div>
