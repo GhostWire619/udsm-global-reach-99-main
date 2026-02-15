@@ -26,11 +26,9 @@ const getCountryFlag = (countryCode: string) => {
   return String.fromCodePoint(code.charCodeAt(0) + offset, code.charCodeAt(1) + offset);
 };
 
-// Format number with K/M suffix
+// Format number with locale string
 const formatNumber = (num: number) => {
-  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-  if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-  return num.toString();
+  return num.toLocaleString();
 };
 
 // UDSM Design System Colors - Light Blue Theme

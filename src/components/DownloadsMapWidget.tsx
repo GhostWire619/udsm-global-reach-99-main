@@ -56,10 +56,8 @@ const countryCoordinates: Record<string, [number, number]> = {
   dz: [1.66, 28.03], ma: [-7.09, 31.79], tn: [9.54, 33.89],
 };
 
-// Format number with suffix
+// Format number with locale string
 const formatNumber = (num: number) => {
-  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-  if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
   return num.toLocaleString();
 };
 

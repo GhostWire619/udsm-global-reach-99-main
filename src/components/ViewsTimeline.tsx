@@ -106,7 +106,7 @@ const ViewsTimeline = ({ abstractViews, galleyViews }: ViewsTimelineProps) => {
             axisLine={false}
             tickMargin={8}
             tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-            tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value}
+            tickFormatter={(value) => value.toLocaleString()}
           />
           <ChartTooltip
             cursor={{ stroke: "hsl(var(--border))" }}
